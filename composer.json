@@ -26,7 +26,8 @@
     "kdyby/strict-objects": "^2.0",
     "nette/di": "^3.0",
     "nette/utils": "^3.0",
-    "nette/finder": "^2.5"
+    "nette/finder": "^2.5",
+    "ocramius/package-versions": "1.5.0"
   },
   "suggest": {
     "kdyby/doctrine-magic-accessors": "Fast-prototyping magic accessors trait for Doctrine entities",
