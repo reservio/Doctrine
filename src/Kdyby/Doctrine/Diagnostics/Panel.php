@@ -19,6 +19,7 @@ use Doctrine\Persistence\Proxy;
 use Kdyby;
 use Nette;
 use Nette\Utils\Strings;
+use ReflectionClass;
 use Tracy\Bar;
 use Tracy\BlueScreen;
 use Tracy\Debugger;
@@ -370,7 +371,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 
 		} elseif ($e instanceof Doctrine\ORM\Mapping\MappingException) {
 			if ($invalidEntity = Strings::match($e->getMessage(), '~^Class "([\\S]+)" .*? is not .*? valid~i')) {
-				$refl = Nette\Reflection\ClassType::from($invalidEntity[1]);
+				$refl = new ReflectionClass($invalidEntity[1]);
 				$file = $refl->getFileName();
 				$errorLine = $refl->getStartLine();
 
@@ -648,7 +649,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 			return FALSE;
 		}
 
-		$refl = Nette\Reflection\ClassType::from($context['class']);
+		$refl = new ReflectionClass($context['class']);
 		$file = $refl->getFileName();
 		$line = NULL;
 
@@ -673,7 +674,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 
 
 	/**
-	 * @param \Reflector|\Nette\Reflection\ClassType|\Nette\Reflection\Method|\Nette\Reflection\Property $refl
+	 * @param \Reflector|\ReflectionClass|\ReflectionMethod|\ReflectionProperty $refl
 	 * @param \Exception|\Throwable $e
 	 * @param int|NULL $startLine
 	 * @return int|NULL
@@ -711,7 +712,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 
 
 	/**
-	 * @param \Reflector|\Nette\Reflection\ClassType|\Nette\Reflection\Method $refl
+	 * @param \Reflector|\ReflectionClass|\ReflectionMethod $refl
 	 * @param int $symbolPos
 	 * @return int
 	 */
@@ -731,7 +732,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 
 
 	/**
-	 * @param \Reflector|Nette\Reflection\ClassType|Nette\Reflection\Method $refl
+	 * @param \Reflector|\ReflectionClass|\ReflectionMethod $refl
 	 * @param string $annotation
 	 * @return string
 	 */
@@ -762,7 +763,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 
 
 	/**
-	 * @param \Nette\Reflection\ClassType|\Nette\Reflection\Method|\Reflector $refl
+	 * @param \ReflectionClass|\ReflectionMethod|\Reflector $refl
 	 * @param int|null $atPos
 	 * @return string
 	 */

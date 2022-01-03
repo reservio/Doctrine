@@ -28,6 +28,7 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Kdyby\Annotations\DI\AnnotationsExtension;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use ReflectionClass;
 
 /**
  * @author Filip Procházka <filip@prochazka.su>
@@ -595,7 +596,7 @@ class OrmExtension extends Nette\DI\CompilerExtension
 		}
 
 		$impl = $driver instanceof \stdClass ? $driver->value : ($driver instanceof Statement ? $driver->getEntity() : (string) $driver);
-		list($driver) = CacheHelpers::filterArgs($driver);
+		[$driver] = CacheHelpers::filterArgs($driver);
 		/** @var Statement $driver */
 
 		/** @var string $impl */
@@ -853,9 +854,9 @@ class OrmExtension extends Nette\DI\CompilerExtension
 	private function addCollapsePathsToTracy(Method $init)
 	{
 		$blueScreen = \Tracy\Debugger::class . '::getBlueScreen()';
-		$commonDirname = dirname(Nette\Reflection\ClassType::from(Doctrine\Common\ClassLoader::class)->getFileName());
+		$commonDirname = dirname((new ReflectionClass(Doctrine\Common\ClassLoader::class))->getFileName());
 
-		$init->addBody($blueScreen . '->collapsePaths[] = ?;', [dirname(Nette\Reflection\ClassType::from(Kdyby\Doctrine\Exception::class)->getFileName())]);
+		$init->addBody($blueScreen . '->collapsePaths[] = ?;', [dirname((new ReflectionClass(Kdyby\Doctrine\Exception::class))->getFileName())]);
 		$init->addBody($blueScreen . '->collapsePaths[] = ?;', [dirname(dirname(dirname(dirname($commonDirname))))]); // this should be vendor/doctrine
 		foreach ($this->proxyAutoloaders as $dir) {
 			$init->addBody($blueScreen . '->collapsePaths[] = ?;', [$dir]);
