@@ -12,10 +12,10 @@ namespace Kdyby\Doctrine\Diagnostics;
 
 use Doctrine;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\Proxy;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\Persistence\Proxy;
 use Kdyby;
 use Nette;
 use Nette\Utils\Strings;
@@ -97,7 +97,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 		foreach (debug_backtrace(FALSE) as $row) {
 			if (isset($row['file']) && $this->filterTracePaths(realpath($row['file']))) {
 				if (isset($row['class']) && stripos($row['class'], '\\' . Proxy::MARKER) !== FALSE) {
-					if (!in_array(Doctrine\Common\Persistence\Proxy::class, class_implements($row['class']))) {
+					if (!in_array(Proxy::class, class_implements($row['class']))) {
 						continue;
 
 					} elseif (isset($row['function']) && $row['function'] === '__load') {
@@ -287,7 +287,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 	protected function processQuery(array $query)
 	{
 		$h = 'htmlspecialchars';
-		list($sql, $params, $time, $types, $source) = $query;
+		[$sql, $params, $time, $types, $source] = $query;
 
 		$s = self::highlightQuery(static::formatQuery($sql, (array) $params, (array) $types, $this->connection ? $this->connection->getDatabasePlatform() : NULL));
 		if ($source) {
@@ -318,10 +318,10 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 					return NULL;
 				}
 
-				list($sql, $params, , , $source) = $this->failed[spl_object_hash($e)];
+				[$sql, $params, , , $source] = $this->failed[spl_object_hash($e)];
 
 			} else {
-				list($sql, $params, , $types, $source) = end($this->queries) + range(1, 5);
+				[$sql, $params, , $types, $source] = end($this->queries) + range(1, 5);
 			}
 
 			if (!$sql) {
@@ -494,7 +494,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 
 		$e = NULL;
 		if ($source && is_array($source)) {
-			list($file, $line) = $source;
+			[$file, $line] = $source;
 			$e = '<p><b>File:</b> ' . self::editorLink($file, $line) . '</p>';
 		}
 
@@ -576,7 +576,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 		}
 
 		try {
-			list($query, $params, $types) = \Doctrine\DBAL\SQLParserUtils::expandListParameters($query, $params, $types);
+			[$query, $params, $types] = \Doctrine\DBAL\SQLParserUtils::expandListParameters($query, $params, $types);
 		} catch (Doctrine\DBAL\SQLParserUtilsException $e) {
 		}
 
