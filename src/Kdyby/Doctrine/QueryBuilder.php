@@ -14,7 +14,7 @@ use Doctrine;
 use Doctrine\ORM\Query\Expr;
 use Kdyby;
 use Nette;
-
+use Traversable;
 
 
 /**
@@ -133,7 +133,7 @@ class QueryBuilder extends Doctrine\ORM\QueryBuilder implements \IteratorAggrega
 	/**
 	 * @return \Doctrine\ORM\Internal\Hydration\IterableResult|\Traversable
 	 */
-	public function getIterator()
+	public function getIterator(): Traversable
 	{
 		return $this->getQuery()->iterate();
 	}
