@@ -133,7 +133,7 @@ class QueryBuilder extends Doctrine\ORM\QueryBuilder implements \IteratorAggrega
 	/**
 	 * @return \Doctrine\ORM\Internal\Hydration\IterableResult|\Traversable
 	 */
-	public function getIterator(): Traversable
+	public function getIterator(): \Traversable
 	{
 		return $this->getQuery()->iterate();
 	}
