@@ -12,6 +12,7 @@ namespace Kdyby\Doctrine;
 
 use Doctrine;
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Driver;
 use Kdyby;
@@ -208,18 +209,17 @@ class Connection extends Doctrine\DBAL\Connection
 	 */
 	public function prepare(string $sql): \Doctrine\DBAL\Statement
 	{
-		$this->connect();
+        $connection = $this->getNativeConnection();
 
-		try {
-			$stmt = new PDOStatement($sql, $this);
+        try {
+            $statement = $connection->prepare($sql);
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $sql);
+        }
 
-		} catch (\Exception $ex) {
-			throw $this->resolveException(Doctrine\DBAL\DBALException::driverExceptionDuringQuery($this->getDriver(), $ex, $statement), $statement);
-		}
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
 
-		$stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-		return $stmt;
+        return new \Doctrine\DBAL\Statement($this, $statement, $sql);
 	}
 
 
