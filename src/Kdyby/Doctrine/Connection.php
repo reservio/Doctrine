@@ -219,16 +219,14 @@ class Connection extends Doctrine\DBAL\Connection
 	/**
 	 * Prepares an SQL statement.
 	 *
-	 * @param string $statement The SQL statement to prepare.
 	 * @throws DBALException
-	 * @return PDOStatement The prepared statement.
 	 */
-	public function prepare($statement)
+	public function prepare(string $sql): \Doctrine\DBAL\Statement
 	{
 		$this->connect();
 
 		try {
-			$stmt = new PDOStatement($statement, $this);
+			$stmt = new PDOStatement($sql, $this);
 
 		} catch (\Exception $ex) {
 			throw $this->resolveException(Doctrine\DBAL\DBALException::driverExceptionDuringQuery($this->getDriver(), $ex, $statement), $statement);
