@@ -25,7 +25,7 @@ class PDOStatement extends Statement
 	/**
 	 * {@inheritdoc}
 	 */
-	public function execute($params = NULL)
+	public function execute($params = NULL): \Doctrine\DBAL\Result
 	{
 		try {
 			return parent::execute($params);
