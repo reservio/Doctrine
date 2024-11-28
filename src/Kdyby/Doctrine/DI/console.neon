@@ -7,7 +7,6 @@
 - Kdyby\Doctrine\Console\Proxy\ConvertMappingCommand
 - Kdyby\Doctrine\Console\Proxy\GenerateEntitiesCommand
 - Kdyby\Doctrine\Console\Proxy\GenerateProxiesCommand
-- Kdyby\Doctrine\Console\Proxy\ImportCommand
 - Kdyby\Doctrine\Console\Proxy\InfoCommand
 - Kdyby\Doctrine\Console\Proxy\MappingDescribeCommand
 - Kdyby\Doctrine\Console\Proxy\ReservedWordsCommand
