@@ -25,7 +25,8 @@
     "kdyby/strict-objects": "dev-updates",
     "nette/di": "^3.0",
     "nette/utils": "^3.0",
-    "nette/finder": "^2.5"
+    "nette/finder": "^2.5",
+    "symfony/console": ">=v7.0.0"
   },
   "suggest": {
     "kdyby/doctrine-magic-accessors": "Fast-prototyping magic accessors trait for Doctrine entities",
