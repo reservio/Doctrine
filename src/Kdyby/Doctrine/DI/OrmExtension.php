@@ -508,7 +508,7 @@ class OrmExtension extends Nette\DI\CompilerExtension
 			->setClass(Doctrine\DBAL\Configuration::class)
 			->addSetup('setResultCacheImpl', [$this->processCache($config['resultCache'], $name . '.dbalResult')])
 			->addSetup('setSQLLogger', [new Statement(Doctrine\DBAL\Logging\LoggerChain::class)])
-			->addSetup('setFilterSchemaAssetsExpression', [$config['schemaFilter']])
+			->addSetup('setSchemaAssetsFilter', [$config['schemaFilter']])
 			->setAutowired(FALSE);
 
 		// types
