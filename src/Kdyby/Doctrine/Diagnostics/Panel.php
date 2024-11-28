@@ -811,7 +811,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 		$logger = $config->getSQLLogger();
 
 		if ($logger instanceof Doctrine\DBAL\Logging\LoggerChain) {
-			$logger->addLogger($this);
+//			$logger->addLogger($this);
 
 		} else {
 			$config->setSQLLogger($this);
