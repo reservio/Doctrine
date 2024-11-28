@@ -421,7 +421,7 @@ class OrmExtension extends Nette\DI\CompilerExtension
 				->addTag(Kdyby\Console\DI\ConsoleExtension::HELPER_TAG, 'em');
 
 			$builder->addDefinition($this->prefix('helper.connection'))
-				->setFactory(ConnectionHelper::class, [$connectionService])
+				->setFactory(\Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider::class, [$connectionService])
 				->addTag(Kdyby\Console\DI\ConsoleExtension::HELPER_TAG, 'db');
 
 			$builder->addAlias($this->prefix('schemaValidator'), $this->prefix($name . '.schemaValidator'));
