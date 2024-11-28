@@ -209,7 +209,7 @@ class Connection extends Doctrine\DBAL\Connection
 	 */
 	public function prepare(string $sql): \Doctrine\DBAL\Statement
 	{
-        $connection = $this->getNativeConnection();
+        $connection = $this->getWrappedConnection();
 
         try {
             $statement = $connection->prepare($sql);
