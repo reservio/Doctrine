@@ -12,6 +12,7 @@ namespace Kdyby\Doctrine;
 
 use Doctrine;
 use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Driver;
 use Kdyby;
@@ -143,18 +144,25 @@ class Connection extends Doctrine\DBAL\Connection
 
 
 
-	/**
-	 * @param string $query
-	 * @param array $params
-	 * @param array $types
-	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile $qcp
-	 * @return Driver\ResultStatement
-	 * @throws DBALException
-	 */
-	public function executeQuery($query, array $params = [], $types = [], Doctrine\DBAL\Cache\QueryCacheProfile $qcp = NULL)
+	public function executeQuery(string $sql, array $params = [], $types = [], ?\Doctrine\DBAL\Cache\QueryCacheProfile $qcp = null): \Doctrine\DBAL\Result
 	{
 		try {
-			return parent::executeQuery($query, $params, $types, $qcp);
+			return parent::executeQuery($sql, $params, $types, $qcp);
+
+		} catch (\Exception $e) {
+			throw $this->resolveException($e, $sql, $params);
+		}
+	}
+
+
+
+	/**
+	 * @throws DBALException
+	 */
+	public function executeUpdate(string $sql, array $params = [], array $types = []): int
+	{
+		try {
+			return parent::executeUpdate($sql, $params, $types);
 
 		} catch (\Exception $e) {
 			throw $this->resolveException($e, $query, $params);
@@ -164,36 +172,15 @@ class Connection extends Doctrine\DBAL\Connection
 
 
 	/**
-	 * @param string $query
-	 * @param array $params
-	 * @param array $types
-	 * @return int
 	 * @throws DBALException
 	 */
-	public function executeUpdate($query, array $params = [], array $types = [])
+	public function exec(string $sql): int
 	{
 		try {
-			return parent::executeUpdate($query, $params, $types);
+			return parent::exec($sql);
 
 		} catch (\Exception $e) {
-			throw $this->resolveException($e, $query, $params);
-		}
-	}
-
-
-
-	/**
-	 * @param string $statement
-	 * @return int
-	 * @throws DBALException
-	 */
-	public function exec($statement)
-	{
-		try {
-			return parent::exec($statement);
-
-		} catch (\Exception $e) {
-			throw $this->resolveException($e, $statement);
+			throw $this->resolveException($e, $sql);
 		}
 	}
 
@@ -203,14 +190,13 @@ class Connection extends Doctrine\DBAL\Connection
 	 * @return \Doctrine\DBAL\Driver\Statement|mixed
 	 * @throws DBALException
 	 */
-	public function query()
+	public function query(string $sql): \Doctrine\DBAL\Result
 	{
-		$args = func_get_args();
-		try {
-			return call_user_func_array([parent::class, 'query'], $args);
+        try {
+			return parent::query($sql);
 
 		} catch (\Exception $e) {
-			throw $this->resolveException($e, func_get_arg(0));
+			throw $this->resolveException($e, $sql);
 		}
 	}
 
@@ -219,24 +205,21 @@ class Connection extends Doctrine\DBAL\Connection
 	/**
 	 * Prepares an SQL statement.
 	 *
-	 * @param string $statement The SQL statement to prepare.
 	 * @throws DBALException
-	 * @return PDOStatement The prepared statement.
 	 */
-	public function prepare($statement)
+	public function prepare(string $sql): \Doctrine\DBAL\Statement
 	{
-		$this->connect();
+        $connection = $this->getWrappedConnection();
 
-		try {
-			$stmt = new PDOStatement($statement, $this);
+        try {
+            $statement = $connection->prepare($sql);
+        } catch (Driver\Exception $e) {
+            throw $this->convertExceptionDuringQuery($e, $sql);
+        }
 
-		} catch (\Exception $ex) {
-			throw $this->resolveException(Doctrine\DBAL\DBALException::driverExceptionDuringQuery($this->getDriver(), $ex, $statement), $statement);
-		}
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
 
-		$stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-		return $stmt;
+        return new \Doctrine\DBAL\Statement($this, $statement, $sql);
 	}
 
 

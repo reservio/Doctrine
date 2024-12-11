@@ -35,7 +35,7 @@ class ConnectionHelper extends Helper
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'connection';
     }
