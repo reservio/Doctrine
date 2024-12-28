@@ -63,7 +63,7 @@ abstract class OrmDelegateCommand extends Command
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		return $this->wrapCommand($input->getOption('em'))->execute($input, $output);
 	}

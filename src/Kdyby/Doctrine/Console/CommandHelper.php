@@ -10,7 +10,7 @@
 
 namespace Kdyby\Doctrine\Console;
 
-use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use Kdyby\Doctrine\ConnectionHelper;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Kdyby\Console\ContainerHelper;
 use Symfony\Component\Console\Helper\HelperSet;

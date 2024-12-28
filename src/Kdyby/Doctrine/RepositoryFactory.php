@@ -105,7 +105,7 @@ class RepositoryFactory implements Doctrine\ORM\Repository\RepositoryFactory
 	private function createRepository(EntityManagerInterface $entityManager, Doctrine\ORM\Mapping\ClassMetadata $metadata)
 	{
 		$defaultClass = $entityManager->getConfiguration()->getDefaultRepositoryClassName();
-		$customClass = ltrim($metadata->customRepositoryClassName, '\\');
+		$customClass = $metadata->customRepositoryClassName ? ltrim($metadata->customRepositoryClassName, '\\') : '';
 
 		if (empty($customClass) || $customClass === $defaultClass) {
 			$factory = $this->getRepositoryFactory($this->defaultRepositoryFactory);

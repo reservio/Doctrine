@@ -421,7 +421,7 @@ class OrmExtension extends Nette\DI\CompilerExtension
 				->addTag(Kdyby\Console\DI\ConsoleExtension::HELPER_TAG, 'em');
 
 			$builder->addDefinition($this->prefix('helper.connection'))
-				->setFactory(ConnectionHelper::class, [$connectionService])
+				->setFactory(\Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider::class, [$connectionService])
 				->addTag(Kdyby\Console\DI\ConsoleExtension::HELPER_TAG, 'db');
 
 			$builder->addAlias($this->prefix('schemaValidator'), $this->prefix($name . '.schemaValidator'));
@@ -508,7 +508,7 @@ class OrmExtension extends Nette\DI\CompilerExtension
 			->setClass(Doctrine\DBAL\Configuration::class)
 			->addSetup('setResultCacheImpl', [$this->processCache($config['resultCache'], $name . '.dbalResult')])
 			->addSetup('setSQLLogger', [new Statement(Doctrine\DBAL\Logging\LoggerChain::class)])
-			->addSetup('setFilterSchemaAssetsExpression', [$config['schemaFilter']])
+			->addSetup('setSchemaAssetsFilter', [$config['schemaFilter']])
 			->setAutowired(FALSE);
 
 		// types
