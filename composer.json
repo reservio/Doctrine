@@ -24,7 +24,7 @@
     "kdyby/doctrine-cache": "^3.1.2",
     "kdyby/strict-objects": "dev-updates",
     "nette/di": "^3.0",
-    "nette/utils": "^3.0",
+    "nette/utils": "^3.0 || ^4.0",
     "nette/finder": "^2.5",
     "symfony/console": ">=v7.0.0",
     "doctrine/dbal": ">=3.0.0"
