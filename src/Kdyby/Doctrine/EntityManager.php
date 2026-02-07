@@ -140,7 +140,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	 * @param object|array|NULL $entity
 	 * @return EntityManager
 	 */
-	public function flush($entity )
+	public function flush($entity = null)
 	{
 		try {
 			parent::flush($entity);
