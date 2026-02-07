@@ -37,9 +37,9 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	use \Kdyby\StrictObjects\Scream;
 
 	/**
-	 * @var ckingUniqueInserter
+	 * @var UniqueInserter
 	 */
-	private $ckingUniqueInserter;
+	private $nonLockingUniqueInserter;
 
 	/**
 	 * @var \Kdyby\Doctrine\Diagnostics\EntityManagerUnitOfWorkSnapshotPanel
@@ -183,7 +183,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	 */
 	public function safePersist($entity)
 	{
-		if ($this->ckingUniqueInserter === NULL) {
+		if ($this->nonLockingUniqueInserter === NULL) {
 			$this->nonLockingUniqueInserter = new NonLockingUniqueInserter($this);
 		}
 
