@@ -221,7 +221,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	 * @throws \Doctrine\ORM\ORMException
 	 * @return EntityManager
 	 */
-	public static function create($conn, Doctrine\ORM\Configuration $config, ?Doctrine\Common\EventManager $eventManager )
+	public static function create($conn, Doctrine\ORM\Configuration $config, ?Doctrine\Common\EventManager $eventManager = NULL)
 	{
 		if (!$config->getMetadataDriverImpl()) {
 			throw ORMException::missingMappingDriverImpl();
