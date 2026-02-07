@@ -140,7 +140,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	 * @param object|array|NULL $entity
 	 * @return EntityManager
 	 */
-	public function flush($entity = null)
+	public function flush($entity )
 	{
 		try {
 			parent::flush($entity);
@@ -183,7 +183,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	 */
 	public function safePersist($entity)
 	{
-		if ($this->nonLockingUniqueInserter === NULL) {
+		if ($this->nonLockingUniqueInserter ==) {
 			$this->nonLockingUniqueInserter = new NonLockingUniqueInserter($this);
 		}
 
@@ -221,7 +221,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	 * @throws \Doctrine\ORM\ORMException
 	 * @return EntityManager
 	 */
-	public static function create($conn, Doctrine\ORM\Configuration $config, Doctrine\Common\EventManager $eventManager = NULL)
+	public static function create($conn, Doctrine\ORM\Configuration $config, ?Doctrine\Common\EventManager $eventManager )
 	{
 		if (!$config->getMetadataDriverImpl()) {
 			throw ORMException::missingMappingDriverImpl();
