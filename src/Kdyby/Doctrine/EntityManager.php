@@ -37,7 +37,7 @@ class EntityManager extends Doctrine\ORM\EntityManager implements Persistence\Qu
 	use \Kdyby\StrictObjects\Scream;
 
 	/**
-	 * @var UniqueInserter
+	 * @var NonLockingUniqueInserter
 	 */
 	private $nonLockingUniqueInserter;
 
