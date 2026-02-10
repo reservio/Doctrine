@@ -90,7 +90,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 	 * @param array|null $params
 	 * @param array|null $types
 	 */
-	public function startQuery($sql, array $params = NULL, array $types = NULL)
+	public function startQuery($sql, ?array $params = NULL, ?array $types = NULL)
 	{
 		Debugger::timer('doctrine');
 
@@ -559,7 +559,7 @@ class Panel implements IBarPanel, Doctrine\DBAL\Logging\SQLLogger
 	 * @throws \Nette\Utils\RegexpException
 	 * @return string
 	 */
-	public static function formatQuery($query, $params, array $types = [], AbstractPlatform $platform = NULL)
+	public static function formatQuery($query, $params, array $types = [], ?AbstractPlatform $platform = NULL)
 	{
 		if ($platform === NULL) {
 			$platform = new Doctrine\DBAL\Platforms\MySqlPlatform();
